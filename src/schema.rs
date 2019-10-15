@@ -1,0 +1,6 @@
+table! {
+    tasks (id) {
+        id -> Integer,
+        title -> Text,
+    }
+}

@@ -1,4 +1,7 @@
-use rust_todo::db::{create_task, establish_connection, query_tasks, update_task};
+use rust_todo::db::{
+    complete_task as internal_complete_task, create_task, delete_task as internal_delete_task,
+    establish_connection, query_tasks,
+};
 use std::env;
 
 fn main() {
@@ -14,6 +17,7 @@ fn main() {
         "new" => new_task(&args[2..]),
         "show" => show_tasks(&args[2..]),
         "complete" => complete_task(&args[2..]),
+        "delete" => delete_task(&args[2..]),
         _ => help(),
     }
 }
@@ -23,6 +27,7 @@ fn help() {
     println!("    new<title>: create a new task");
     println!("          show: show all tasks");
     println!("  complete<id>: mark a task as done");
+    println!("    delete<id>: delete a task from the list");
 }
 
 fn new_task(args: &[String]) {
@@ -34,6 +39,7 @@ fn new_task(args: &[String]) {
 
     let conn = establish_connection();
     create_task(&conn, &args[0]);
+    println!("Task created!");
 }
 
 fn show_tasks(args: &[String]) {
@@ -63,5 +69,19 @@ fn complete_task(args: &[String]) {
 
     let conn = establish_connection();
     let id = &args[0].parse::<i32>().expect("Invalid ID");
-    update_task(&conn, *id);
+    internal_complete_task(&conn, *id);
+    println!("Task completed!");
+}
+
+fn delete_task(args: &[String]) {
+    if args.len() < 1 {
+        println!("delete: missing <id>");
+        help();
+        return;
+    }
+
+    let conn = establish_connection();
+    let id = &args[0].parse::<i32>().expect("Invalid ID");
+    internal_delete_task(&conn, *id);
+    println!("Task deleted!");
 }

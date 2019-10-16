@@ -10,4 +10,5 @@ pub struct NewTask<'a> {
 pub struct Task {
     pub id: i32,
     pub title: String,
+    pub done: bool,
 }

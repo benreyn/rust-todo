@@ -22,3 +22,13 @@ pub fn query_tasks(connection: &SqliteConnection) -> Vec<models::Task> {
         .load::<models::Task>(connection)
         .expect("Error loading tasks")
 }
+
+pub fn update_task(connection: &SqliteConnection, id: i32) {
+    use schema::tasks::dsl::{done, tasks};
+    let task = tasks.find(id);
+
+    diesel::update(task)
+        .set(done.eq(true))
+        .execute(connection)
+        .expect("Error completing task");
+}

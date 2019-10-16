@@ -1,0 +1,3 @@
+ALTER TABLE tasks
+    ADD done BOOLEAN NOT NULL DEFAULT 0;
+

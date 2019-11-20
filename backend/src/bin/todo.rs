@@ -1,4 +1,4 @@
-use rust_todo::db::{
+use backend::db::{
     complete_task as internal_complete_task, create_task, delete_task as internal_delete_task,
     establish_connection, query_tasks,
 };

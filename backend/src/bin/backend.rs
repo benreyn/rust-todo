@@ -7,8 +7,8 @@ extern crate rocket_contrib;
 #[macro_use]
 extern crate serde;
 
+use backend::db::{establish_connection, models::Task, query_tasks};
 use rocket_contrib::json::Json;
-use rust_todo::db::{establish_connection, query_tasks, models::Task};
 
 #[derive(Serialize)]
 struct JsonApiReponse {
@@ -18,8 +18,8 @@ struct JsonApiReponse {
 #[get("/tasks")]
 fn tasks_get() -> Json<JsonApiReponse> {
     let mut response = JsonApiReponse { data: vec![] };
-
     let conn = establish_connection();
+
     for task in query_tasks(&conn) {
         response.data.push(task);
     }
